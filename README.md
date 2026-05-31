@@ -4,9 +4,6 @@ A Retrieval-Augmented Generation (RAG) system for natural-language Q&A over a db
 Ask questions like *"what does the customers model do?"* or *"where does the orders table come from?"*
 and get grounded answers with citations to the source SQL and YAML files.
 
-Built as a portfolio + learning project alongside DeepLearning.AI's
-*Building and Evaluating Advanced RAG Applications*.
-
 ---
 
 ## How It Works
@@ -50,13 +47,14 @@ cp .env.example .env
 
 ---
 
-## Roadmap
+## Project Scope
 
-- [x] Module 1 — Project setup & security foundations
-- [ ] Module 2 — Understanding RAG & the dbt corpus
-- [ ] Module 3 — Ingestion: loading & chunking
-- [ ] Module 4 — Embeddings & vector storage
-- [ ] Module 5 — Retrieval
-- [ ] Module 6 — Generation & prompt engineering
-- [ ] Module 7 — Streamlit app
-- [ ] Module 8 — Evaluation (Phase 2)
+**Phase 1 — Core Pipeline**
+- Ingestion: walk dbt project, chunk SQL models and YAML schema files, tag metadata
+- Embeddings: encode chunks with OpenAI `text-embedding-3-small`, persist to Chroma
+- Retrieval: semantic search over vector store, configurable top-k, metadata filtering
+- Generation: grounded prompt construction, cited answers via `gpt-4o-mini`
+
+**Phase 2 — Interface & Evaluation**
+- Streamlit Q&A interface with expandable source citations
+- RAG triad evaluation (context relevance, groundedness, answer relevance) via Ragas
