@@ -8,7 +8,7 @@ GENERATION_MODEL = "gpt-4o-mini"
 
 _SYSTEM_PROMPT = """You are an assistant that answers questions about a dbt project.
 Answer ONLY using the context provided below. Cite the source file for each piece of information you use.
-If the context does not contain enough information to answer, say "I don't know based on the provided context."
+If the context does not contain enough information to answer, say "I don't know based on the provided context. Can you elaborate or provide more details?"
 Do not use any knowledge outside of the provided context."""
 
 
@@ -31,7 +31,7 @@ def answer(question: str, k: int = 3) -> dict:
 
     llm = ChatOpenAI(
         model=GENERATION_MODEL,
-        temperature=0,
+        temperature=0.1,
         api_key=os.getenv("OPENAI_API_KEY"),
     )
 
@@ -47,7 +47,7 @@ def answer(question: str, k: int = 3) -> dict:
         "sources": [doc.metadata["file_path"] for doc in docs],
     }
 
-
+#test answer function checking if it returns an answer and sources as per instruction and logic.
 if __name__ == "__main__":
     result = answer("How is customer_lifetime_value calculated?")
     print(result["answer"])
