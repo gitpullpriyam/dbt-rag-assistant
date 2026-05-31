@@ -28,9 +28,9 @@ src/app/              →  Streamlit UI tying it all together
 | Language | Python 3.11+ | Primary language |
 | Orchestration | LangChain | Portfolio-backed |
 | Vector store | Chroma (local) | Zero infra, persists to disk |
-| Embeddings | OpenAI `text-embedding-3-small` | Cheap, good enough |
-| Generation | OpenAI `gpt-4o-mini` | Cheap, capable |
-| UI | Streamlit | Fastest path to a demo |
+| Embeddings | OpenAI `text-embedding-3-small` | good enough |
+| Generation | OpenAI `gpt-4o-mini` | capable enough |
+| UI | Streamlit | Fastest path to run demo |
 
 ---
 
