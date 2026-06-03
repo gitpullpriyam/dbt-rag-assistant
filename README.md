@@ -23,11 +23,11 @@ src/app/              →  Streamlit UI tying it all together
 | Layer | Choice | Why |
 |---|---|---|
 | Language | Python 3.11+ | Primary language |
-| Orchestration | LangChain | Portfolio-backed |
+| Orchestration | LangChain | Clean abstractions for chaining retrieval and generation |
 | Vector store | Chroma (local) | Zero infra, persists to disk |
-| Embeddings | OpenAI `text-embedding-3-small` | good enough |
-| Generation | OpenAI `gpt-4o-mini` | capable enough |
-| UI | Streamlit | Fastest path to run demo |
+| Embeddings | OpenAI `text-embedding-3-small` | Low cost, strong semantic quality |
+| Generation | OpenAI `gpt-4o-mini` | Fast, capable, cost-efficient |
+| UI | Streamlit | Rapid prototyping, zero frontend code |
 
 ---
 
@@ -45,6 +45,18 @@ cp .env.example .env
 # Edit .env and add your OpenAI API key
 ```
 
+**Build the vector store** (one-time, re-run when the corpus changes):
+
+```bash
+python -m src.ingestion.embedder
+```
+
+**Run the app:**
+
+```bash
+python -m streamlit run src/app/app.py
+```
+
 ---
 
 ## Project Scope
@@ -54,7 +66,8 @@ cp .env.example .env
 - Embeddings: encode chunks with OpenAI `text-embedding-3-small`, persist to Chroma
 - Retrieval: semantic search over vector store, configurable top-k, metadata filtering
 - Generation: grounded prompt construction, cited answers via `gpt-4o-mini`
+- Interface: Streamlit Q&A app with expandable source citations
 
-**Phase 2 — Interface & Evaluation**
-- Streamlit Q&A interface with expandable source citations
-- RAG triad evaluation (context relevance, groundedness, answer relevance) via Ragas
+**Phase 2 — Evaluation**
+- RAG triad scoring (context relevance, groundedness, answer relevance) via Ragas
+- Hand-built eval set across query types, before/after benchmark comparisons
