@@ -1,0 +1,62 @@
+[
+  {
+    "type": "definitional",
+    "question": "What is the customers model?",
+    "reference": "The customers model contains basic information about a customer as well as derived facts based on their orders. It exposes customer_id, first_name, last_name, first_order date, most_recent_order date, number_of_orders, and total_order_amount (customer lifetime value)."
+  },
+  {
+    "type": "definitional",
+    "question": "What does the orders model contain?",
+    "reference": "The orders model contains basic information about orders as well as derived facts based on payments. It includes order_id, customer_id, order_date, status, individual payment method amounts (credit_card, coupon, bank_transfer, gift_card), and total amount."
+  },
+  {
+    "type": "definitional",
+    "question": "What is the purpose of the stg_customers model?",
+    "reference": "The stg_customers staging model selects and standardises raw customer data, exposing a customer_id column with unique and not_null tests applied."
+  },
+  {
+    "type": "explanatory",
+    "question": "How is customer_lifetime_value calculated?",
+    "reference": "customer_lifetime_value is calculated by summing the total payment amount associated with a customer's orders. In the customer_payments CTE, the amount from the payments table is summed and grouped by customer_id via a join to the orders table. This total is then aliased as customer_lifetime_value in the final CTE."
+  },
+  {
+    "type": "explanatory",
+    "question": "How are payment methods handled in the orders model?",
+    "reference": "The orders model uses a Jinja for-loop over a list of payment methods — credit_card, coupon, bank_transfer, and gift_card — to dynamically generate a separate amount column for each method using conditional aggregation. The total across all methods is also included as amount."
+  },
+  {
+    "type": "explanatory",
+    "question": "How is the final orders dataset assembled?",
+    "reference": "The orders model joins the stg_orders CTE with the order_payments CTE on order_id. The order_payments CTE aggregates payment amounts from stg_payments grouped by order_id, producing per-method and total amounts. These are combined with order metadata in the final select."
+  },
+  {
+    "type": "lineage",
+    "question": "What models does the customers model depend on?",
+    "reference": "The customers model depends on three staging models: stg_customers, stg_orders, and stg_payments. These are referenced using the dbt ref() function in the customers.sql CTEs."
+  },
+  {
+    "type": "lineage",
+    "question": "What models does the orders model depend on?",
+    "reference": "The orders model depends on stg_orders and stg_payments, referenced via the dbt ref() function to build the order and payment CTEs."
+  },
+  {
+    "type": "lineage",
+    "question": "What upstream model does stg_orders depend on?",
+    "reference": "The stg_orders staging model selects from the raw_orders source table."
+  },
+  {
+    "type": "structural",
+    "question": "What columns does the customers model expose and what do they mean?",
+    "reference": "The customers model exposes: customer_id (unique identifier), first_name and last_name (PII), first_order (date of first order), most_recent_order (date of most recent order), number_of_orders (count of orders placed), and total_order_amount (total value of orders in AUD)."
+  },
+  {
+    "type": "structural",
+    "question": "What payment methods are accepted in this dbt project?",
+    "reference": "Four payment methods are accepted: credit_card, coupon, bank_transfer, and gift_card. These are defined as a list in the orders.sql model and used to generate per-method payment columns."
+  },
+  {
+    "type": "structural",
+    "question": "What data quality tests are defined on the orders model?",
+    "reference": "The orders model has the following tests: order_id has unique and not_null tests; customer_id has not_null and a relationships test validating it references customer_id in the customers model; amount, credit_card_amount, coupon_amount, bank_transfer_amount, and gift_card_amount all have not_null tests; status has an accepted_values test for placed, shipped, completed, return_pending, and returned."
+  }
+]
