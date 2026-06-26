@@ -20,7 +20,7 @@ def _build_context(docs: list[Document]) -> str:
     return "\n\n".join(sections)
 
 
-def answer(question: str, k: int = 3) -> dict:
+def answer(question: str, k: int = 5) -> dict:
     """Retrieve relevant chunks and generate a grounded, cited answer."""
     load_dotenv()
 

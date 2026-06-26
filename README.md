@@ -71,3 +71,19 @@ python -m streamlit run src/app/app.py
 **Phase 2 — Evaluation**
 - RAG triad scoring (context relevance, groundedness, answer relevance) via Ragas
 - Hand-built eval set across query types, before/after benchmark comparisons
+
+---
+
+## Evaluation Results
+
+Scored with [Ragas](https://docs.ragas.io) using `gpt-4o-mini` as judge. Eval set: 12 hand-written questions across definitional, explanatory, lineage, and structural query types.
+
+| Metric | Baseline (k=3) | After (k=5) |
+|---|---|---|
+| Context Recall | 0.875 | **0.889** |
+| Faithfulness | 0.752 | 0.751 |
+| Answer Relevancy | 0.885 | **0.889** |
+
+**Improvement applied:** Increased retrieval top-k from 3 to 5. Retrieval was the binding constraint — lineage and structural questions require context from multiple files simultaneously. Returning more chunks improved recall and answer completeness.
+
+**Finding:** Faithfulness (groundedness) is the hardest metric to move with prompt engineering alone on a small corpus. The LLM occasionally draws on training knowledge when retrieved context is partial. Addressed partially by retrieving more context; full resolution would require a larger corpus or retrieval re-ranking.
